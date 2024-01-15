@@ -12,6 +12,7 @@ from django.core.mail import send_mail
 from django.forms.fields import BooleanField
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
+from django.core.validators import RegexValidator
 
 class AddedByMixin(models.Model): 
     added_by = models.ForeignKey(
@@ -36,7 +37,7 @@ class SlugMixin(models.Model):
         abstract = True
 
 class TimeMixin(models.Model):
-    created_date = models.DateField(auto_now=True, null=True)
+    created_date = models.DateTimeField(auto_now=True, null=True)
     updated_date = models.DateField(auto_now_add=True, null=True)
 
     class Meta:
@@ -63,7 +64,7 @@ class UserManager(BaseUserManager):
         user_obj.save()
         return user_obj
 
-    def create_superuser(self, email, password=None):
+    def create_superuser(self, email, password=None,**kwargs):
         user = self.create_user(email, password=password)
         user.admin = True
         user.staff = True
@@ -72,6 +73,8 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser, PermissionsMixin):
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
+
     ADMINISTRATOR = "ADMINISTRATOR"
     DISPATCH_ATTENDANT = "DISPATCH_ATTENDANT"
     DISPATCH_MANAGER = "DISPATCH_MANAGER"
@@ -89,7 +92,8 @@ class User(AbstractUser, PermissionsMixin):
     )
     active = models.BooleanField(
         default=False
-    )  # allows login - set after email confirmation
+    )
+    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True) # Validators should be a list
     staff = models.BooleanField(default=False)  # staff user non superuser
     admin = models.BooleanField(default=False)  # superuser
     confirmed_email = models.BooleanField(default=False)
