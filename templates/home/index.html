@@ -160,8 +160,9 @@
                 {{ obj.created_date|date:'D d, M Y' }}<span>{{ obj.created_date|time:"g:iA" }}</span>
               </div>
               <div class="tracking-content font-weight-bold">
-                {{ obj.name|title }}<span>
-                  {{ obj.departure }} --> {{ obj.destination }}
+                <a href="{% url 'dispatch:index' obj.slug %}">{{ obj.name|title }}</a>
+                <span>
+                {{ obj.departure }} --> {{ obj.destination }}
                 </span>
               </div>
             </div>

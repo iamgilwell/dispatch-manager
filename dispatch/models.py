@@ -32,7 +32,7 @@ class ItemTracker(AddedByMixin, SlugMixin, TimeMixin, models.Model):
     status = models.CharField(max_length=20, choices=ITEM_CHOICES, blank=True, null=True)
     location = models.CharField(max_length=5000, null=True, blank=True)
     notes = models.CharField(max_length=5000, null=True, blank=True)
-    date = models.DateField(auto_now_add=True)
+    received_date = models.DateTimeField(blank=True, null=True, editable=True)
 
-    def __str__(self):
-        return self.item
+    def __str__(self:str) -> str:
+        return str(self.item)

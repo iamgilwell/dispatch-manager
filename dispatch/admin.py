@@ -9,5 +9,5 @@ admin.site.register(Item, ItemAdmin)
 
 class ItemTrackerAdmin(admin.ModelAdmin):
     model = ItemTracker
-    list_display = ['item','status','location','notes','date',]
+    list_display = ['item','status','location','notes','received_date',]
 admin.site.register(ItemTracker, ItemTrackerAdmin)
