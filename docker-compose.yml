@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  # Django Application
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    container_name: dispatch-manager-app
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app/
+
+networks:
+  default:
+    name: dispatch-manager-network
