@@ -9,6 +9,7 @@ django-crispy-forms = "*"
 crispy-bootstrap5 = "*"
 django-bootstrap5 = "*"
 pillow = "*"
+django-environ = "*"
 
 [dev-packages]
 
