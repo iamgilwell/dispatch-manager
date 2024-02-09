@@ -8,15 +8,16 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      pod: django 
+      pod: django-container
   template:
     metadata:
       labels:
-        pod: django
+        pod: django-container
     spec:
       containers:
         - name: django
           image: carrotdevstar/dispatch-manager
+          command: ['/bin/bash', 'run.sh'] # runs migrations and starts the server
           resources:
             limits:
               memory: 512Mi

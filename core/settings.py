@@ -61,12 +61,22 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
-
 DATABASES = {
-    # read os.environ['DATABASE_URL'] and raises
-    # ImproperlyConfigured exception if not found
-    'default':env.db()
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'kubernetes_django',
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST'),
+        'PORT': os.getenv('POSTGRES_PORT', 5432)
+     }
 }
+
+# DATABASES = {
+#     # read os.environ['DATABASE_URL'] and raises
+#     # ImproperlyConfigured exception if not found
+#     'default':env.db()
+# }
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
