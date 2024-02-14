@@ -4,8 +4,11 @@ MAINTAINER Gilwell Muhati <gilwellm@gmail.com>
 ENV PROJECT_ROOT /app
 WORKDIR $PROJECT_ROOT
 
+
 # Install dependencies
 COPY Pipfile Pipfile.lock /app/
+RUN pip install pipenv && pipenv install --system
+RUN pipenv run pip install psycopg2-binary
 RUN pip install pipenv && pipenv install --system # wrong→ same. -- system
 
 COPY . .
