@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: postgres
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: postgres-container
@@ -14,30 +14,31 @@ spec:
         tier: backend
     spec:
       containers:
-      - name: postgres-container
-        image: postgres:16.1-alpine
-        env:
-          - name: POSTGRES_USER
-            valueFrom:
-              secretKeyRef:
-                name: postgres-credentials
-                key: user
-          - name: POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: postgres-credentials
-                key: password
-          - name: POSTGRES_HOST
-            value: kubernetes_django
-        ports:
-          - containerPort: 5432
-        volumeMounts:
-          - name: postgres-volume-mount
-            mountPath: /var/lib/postgresql/data
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+        - name: postgres-container
+          image: postgres:9.6.6
+          imagePullPolicy: "IfNotPresent"
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
+            - name: POSTGRES_HOST
+              value: kubernetes_django
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: postgres-volume-mount
+              mountPath: /var/lib/postgresql/data
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
       volumes:
         - name: postgres-volume-mount
           persistentVolumeClaim:
